@@ -60,12 +60,17 @@ int main(int argc, char **argv)
 #include <stdlib.h>
 int main(int argc, char **argv)
 {
-  FILE *fp;
+  FILE *fp, *txtPtr;
   int way, oper;
   unsigned int time;
   double lat, lon, alt;
+  //int a;
   //fp = fopen("sample.trj", "rb");
-  fp = fopen("gpsdata_little_endian.trj", "rb");
+  //fp = fopen("gpsdata_little_endian.trj", "rb");
+  fp = fopen("/home/ej/gpsdata_little_endian.trj", "rb");
+  //txtPtr = fopen("/home/ej/gps_data_LE.txt", "a+");
+  txtPtr = fopen("/home/ej/gps_data_LE.txt", "w");
+  fputs("way\t time\t latitude\t longitude\t altitude\n", txtPtr);
   while(!feof(fp)) {
     fread(&way, 1, sizeof(int), fp);
     fread(&time, 1, sizeof(int), fp);
@@ -73,9 +78,9 @@ int main(int argc, char **argv)
     fread(&lon, 1, sizeof(double), fp);
     fread(&alt, 1, sizeof(double), fp);
     printf("%d\t%d\t\%.6f\t%.6f\t%.2f\n", way, time, lat, lon, alt);
+    fprintf(txtPtr, "%d\t%d\t\%.6f\t%.6f\t%.2f\n", way, time, lat, lon, alt);
   }
   fclose(fp);
+  fclose(txtPtr);
   return 0;
 }
-
-
